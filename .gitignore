@@ -8,7 +8,7 @@
 /httpRequests/
 
 *.exe
-*.txt
+info.txt
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
