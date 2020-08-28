@@ -18,20 +18,44 @@ def clickRadioButton():
 
 def validateLoading(cssSelector):
     try:
-        element = WebDriverWait(driver, 3).until(
+        element = WebDriverWait(driver, 8).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, cssSelector))
         )
+        element = WebDriverWait(driver, 8).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, cssSelector))
+        )
+        print(cssSelector,'valid')
     except Exception as e:
         print(e)
 
 
+
+def waitUntilPresenceOf(cssSelector):
+    try:
+        element = WebDriverWait(driver, 8).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, cssSelector))
+                    )
+    except Exception as e:
+        print(e)
+
 def clickButton(cssSelector):
-    time.sleep(0.5)
+    time.sleep(0.1)
     validateLoading(cssSelector)
+
     driver.find_element_by_css_selector(cssSelector).click()
 
+    # count= 0
+    # while count<3:
+    #     try:
+    #         driver.find_element_by_css_selector(cssSelector).click()
+    #         break
+    #     except Exception as e:
+    #         print(e)
+    #         count+=1
+    #         time.sleep(0.5)
+
 def sendkeys(cssSelector,msg):
-    time.sleep(0.5)
+    time.sleep(0.2)
     validateLoading(cssSelector)
     driver.find_element_by_css_selector(cssSelector).send_keys(msg)
 
@@ -88,16 +112,18 @@ driver.get('https://magnascreening.powerappsportals.com/en-US/?country=Canada&di
 clickButton('div a.btn')
 
 clickButton('table [data-name="Country"] .launchentitylookup')
-clickButton('tr [data-id="d6676e7b-7977-ea11-a811-000d3af42c56"]')
+# clickButton('tr [data-id="d6676e7b-7977-ea11-a811-000d3af42c56"]')
+waitUntilPresenceOf('td[data-value="Canada"]')
+clickButton('td[data-value="Canada"]')
 clickButton('table [data-name="Country"] div.modal-footer [title="Select"]')
 
+
 clickButton('table [data-name="DivisionSection"] .launchentitylookup')
-
 sendkeys('input.query','precision')
-# driver.find_element_by_css_selector('input.query').send_keys('precision')
-
 clickButton('button[title="Search Results"]')
+waitUntilPresenceOf('td[data-value="Precision Technologies"]')
 clickButton('table [data-name="DivisionSection"] div.modal-footer [title="Select"]')
+
 clickButton('div [role="group"] input')
 
 sendkeys('input[title="Please enter your fist name"]',INFORMATION['firstname'])
